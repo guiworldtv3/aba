@@ -29,6 +29,10 @@ jobs:
     - name: Executar script
       run: python amor.py
       
+    - name: Criar arquivo YAML
+      run: touch agendador-de-amor.yml
+
+
     - name: Fazer push do arquivo YAML
       env:
         FILENAME: 'agendador-de-amor.yml'
