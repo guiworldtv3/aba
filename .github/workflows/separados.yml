@@ -40,5 +40,5 @@ jobs:
 
        git commit -m "Atualização automática do agendador de amor"
 
-       git push origin main
+       git push  aba main
 
