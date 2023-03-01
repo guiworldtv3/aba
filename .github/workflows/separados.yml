@@ -29,14 +29,22 @@ jobs:
     - name: Executar script
       run: python amor.py
       
+    - name: Fazer push do arquivo YAML
+      run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add separados.yml
+          git commit -m "Atualizar separados.yml"
+          git push origin HEAD:main
+          
     - name: Criar arquivo YAML
-      run: touch agendador-de-amor.yml
+      run: touch separados.yml
 
 
     - name: Fazer push do arquivo YAML
       env:
-        FILENAME: 'agendador-de-amor.yml'
-        COMMIT_MESSAGE: 'Atualizar agendador-de-amor.yml'
+        FILENAME: 'separados.yml'
+        COMMIT_MESSAGE: 'Atualizar separados.yml'
       run: |
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
