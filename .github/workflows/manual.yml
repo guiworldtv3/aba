@@ -19,6 +19,12 @@ jobs:
           pip install --user --upgrade selenium
           pip install yt-dlp
           pip install pytube
+          pip install youtube-dl
+          pip install requests
+          pip install beautifulsoup4
+          pip install fastapi
+          pip install uvicorn
+          pip install schedule
           
     - name: Executar script
       run: python amor.py
