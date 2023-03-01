@@ -3,6 +3,9 @@ name: Agendador de amor
 on:
   push:
   
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
 jobs:
   executar-amor:
     runs-on: ubuntu-latest
