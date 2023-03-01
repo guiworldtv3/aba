@@ -29,19 +29,13 @@ jobs:
     - name: Executar script
       run: python amor.py
       
-    - name: commit files
+    - name: Fazer push do arquivo YAML
+      env:
+        FILENAME: 'agendador-de-amor.yml'
+        COMMIT_MESSAGE: 'Atualizar agendador-de-amor.yml'
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add -A
-        git commit -m "update data" -a
-          
-    - name: Get current date
-      id: date
-      run: echo "::set-output name=date::$(date '+%Y-%m-%d')"
-        
-    - name: push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: main  
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git add $FILENAME
+        git commit -m "$COMMIT_MESSAGE"
+        git push
