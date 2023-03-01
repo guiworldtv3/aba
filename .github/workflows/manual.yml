@@ -30,16 +30,9 @@ jobs:
       run: python amor.py
       
     - name: Fazer push do arquivo YAML
-      uses: actions/upload-artifact@v2
-      with:
-          name: agendador-de-amor.yml
-          path: agendador-de-amor.yml
-
-    - name: Commit e fazer push do arquivo YAML
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-          commit_message: "Atualizar agendador-de-amor.yml"
-          file_pattern: agendador-de-amor.yml
-          commit_options: '--author "GitHub Action <action@github.com>"'
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add agendador-de-amor.yml
+          git commit -m "Atualizar agendador-de-amor.yml"
+          git push origin HEAD:main
