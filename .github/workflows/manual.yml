@@ -28,3 +28,9 @@ jobs:
           
     - name: Executar script
       run: python amor.py
+      
+    - name: push changes
+      uses: ad-m/github-push-action@master
+      with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main        
