@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: '0 */2 * * *'
 
+  workflow_dispatch:
+  
+  
 jobs:
   executar-amor:
     runs-on: ubuntu-latest
