@@ -1,15 +1,13 @@
 name: Agendador de amor
 
 on:
-  schedule:
-    - cron: '0 */2 * * *'
-
-  workflow_dispatch:
-  
+  push:
   
 jobs:
   executar-amor:
     runs-on: ubuntu-latest
+    schedule:
+      - cron: '0 */2 * * *'
     steps:
     - name: Checar código
       uses: actions/checkout@v2
@@ -28,17 +26,11 @@ jobs:
           
     - name: Executar script
       run: python amor.py
-      
-
           
     - name: Fazer push do arquivo YAML
       run: |
        git config --global user.email "action@github.com"
        git config --global user.name "GitHub Action"
-
        git add -A
-
        git commit -m "Atualização automática do agendador de amor"
-
-       git push  aba main
-
+       git push origin main
