@@ -11,11 +11,11 @@ jobs:
   executar-amor:
     runs-on: ubuntu-latest
     steps:
-      - name: Checar código
-        uses: actions/checkout@v2
+    - name: Checar código
+      uses: actions/checkout@v2
 
-      - name: Instalando streamlink e selenium
-        run: |
+    - name: Instalando streamlink e selenium
+      run: |
           pip install --user --upgrade streamlink
           pip install --user --upgrade selenium
           pip install yt-dlp
@@ -28,20 +28,23 @@ jobs:
           pip install schedule
           
       
-      - name: Executar script
-        run: python amor.py
+    - name: Executar script
+      run: python amor.py
       
-      - name: Fazer push do arquivo YAML
-        uses: actions/upload-artifact@v2
-        with:
-          name: separados.yml
-          path: separados.yml
+    - name: Configurar Git
+      run: |
+        git config --global user.name "seu nome de usuário"
+        git config --global user.email "seu endereço de e-mail"
 
-      - name: Commit e fazer push do arquivo YAML
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Atualizar separados.yml"
-          file_pattern: separados.yml
-          commit_options: '--author "GitHub Action <action@github.com>"'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Adicionar alterações ao Git
+      run: |
+        git add .
+
+    - name: Criar commit
+      run: |
+        git commit -m "mensagem do commit"
+
+    - name: Fazer push no repositório
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
