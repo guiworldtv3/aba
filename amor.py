@@ -1,67 +1,28 @@
-import streamlink
-import subprocess
-import time
-import os
-from selenium import webdriver
-from bs4 import BeautifulSoup
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.action_chains import ActionChains
+import requests
 
-# Configuring Chrome options
-chrome_options = Options()
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-gpu")
+repo_urls = [    "https://api.github.com/repos/guiworldtv2/STR-YT/contents",    "https://api.github.com/repos/guiworldtv2/YT2M3U/contents",    "https://api.github.com/repos/guiworldtv2/STR2/contents"]
 
-# Instanciando o driver do Chrome
-driver = webdriver.Chrome(options=chrome_options)
+lists = []
+for url in repo_urls:
+    response = requests.get(url)
 
-# URL da página desejada
-url_twitch = "https://www.twitch.tv/directory/game/Just%20Chatting?sort=VIEWER_COUNT&tl=espa%C3%B1ol"
+    if response.status_code == 200:
+        contents = response.json()
+        m3u_files = [content for content in contents if content["name"].endswith(".m3u")]
 
-# Abrir a página desejada
-driver.get(url_twitch)
+        for m3u_file in m3u_files:
+            m3u_url = m3u_file["download_url"]
+            m3u_response = requests.get(m3u_url)
 
-# Aguardar alguns segundos para carregar todo o conteúdo da página
-time.sleep(5)
+            if m3u_response.status_code == 200:
+                lists.append((m3u_file["name"], m3u_response.text))
+    else:
+        print(f"Error retrieving contents from {url}")
 
+lists = sorted(lists, key=lambda x: x[0])
 
+with open("lista1.M3U", "w") as f:
+    for l in lists:
+        f.write(l[1])
         
-# Get the page source again after scrolling to the bottom
-html_content = driver.page_source
-
-# Find the links and titles of the videos found
-try:
-    soup = BeautifulSoup(html_content, "html.parser")
-    videos = soup.find_all("a", class_="ScCoreLink-sc-16kq0mq-0 jKBAWW tw-link", href=True)
-    links = ["https://www.twitch.tv" + video.get("href") for video in videos]
-    channels = [video.find("p", {"data-a-target": "preview-card-channel-link", "class": "CoreText-sc-1txzju1-0 jiepBC"}).get("title") for video in videos]
-    titles = [video.find("h3", class_="CoreText-sc-1txzju1-0 eJuFGD").get("title") for video in videos]
-except Exception as e:
-    print(f"Erro: {e}")
-finally:
-    # Close the driver
-    driver.quit()
-
-
-
-
-# Instalando streamlink
-subprocess.run(['pip', 'install', '--user', '--upgrade', 'streamlink'])
-
-# Get the playlist and write to file
-try:
-    with open('./TWITCHPLAY.m3u', 'w') as f:
-        f.write("#EXTM3U\n")  # Imprime #EXTM3U uma vez no início do arquivo
-        for i, link in enumerate(links):
-            # Get the stream information using streamlink
-            streams = streamlink.streams(link)
-            url = streams['best'].url
-
-            # Write the stream information to the file
-            title = channels[i]
-
-            f.write(f"#EXTINF:-1 tvg-id='{title}' tvg-logo=\"https://static-cdn.jtvnw.net/previews-ttv/live_user_{title}-1280x720.jpg\" group-title=\"TWITCH\",{title}\n")            
-            f.write(f"{url}\n")
-            f.write("\n")
-except Exception as e:
-    print(f"Erro ao criar o arquivo .m3u8: {e}")
+       
