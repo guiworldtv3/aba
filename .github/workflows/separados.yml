@@ -2,11 +2,12 @@ name: Agendador de amor
 
 on:
   schedule:
-    - cron: '0 */2 * * *'
+      - cron: '0 */2 * * *'
 
-workflow_dispatch:
- 
- jobs:
+  workflow_dispatch:
+  
+  
+jobs:
   executar-amor:
     runs-on: ubuntu-latest
     steps:
