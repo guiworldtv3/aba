@@ -32,14 +32,14 @@ jobs:
     - name: Fazer push do arquivo YAML
       uses: actions/upload-artifact@v2
       with:
-          name: agendador-de-amor.yml
-          path: agendador-de-amor.yml
+          name: separados.yml
+          path: separados.yml
 
     - name: Commit e fazer push do arquivo YAML
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-          commit_message: "Atualizar agendador-de-amor.yml"
-          file_pattern: agendador-de-amor.yml
+          commit_message: "Atualizar separados.yml"
+          file_pattern: separados.yml
           commit_options: '--author "GitHub Action <action@github.com>"'
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
