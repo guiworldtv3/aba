@@ -1,36 +1,17 @@
-name: Get YouTube Live m3u8
+name: Agendador de amor
+
 on:
   schedule:
-    - cron: '0 0/3 * * *'
-  pull_request:
-    branches:
-      - main
+    - cron: '0 */2 * * *'
+
   workflow_dispatch:
+  
+  
 jobs:
-  build:
+  executar-amor:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: config
-      run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-    - name: Install yt-dlp
-      run: |
-        sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
-        sudo chmod a+rx /usr/local/bin/yt-dlp
-    - name: Get 00.m3u8
-      run: |
-        touch ./00.m3u8
-        sudo sh -c 'cat >./00.m3u8 <<EOL
-        #EXTM3U
-        #EXT-X-VERSION:3
-        #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2560000
-        $(yt-dlp --print urls https://www.youtube.com/watch?v=wKjPli-AHdA)
-        EOL'
-    - name: Commit and Push changes
-      uses: ad-m/github-push-action@v2
-      with:
-        repo: https://<PAT>@github.com/<username>/<repo>.git
-        branch: main
-        message: 'Automated commit and push'
+    - name: Checar código
+      uses: actions/checkout@v2
+    - name: Executar script
+      run: python amor.py
