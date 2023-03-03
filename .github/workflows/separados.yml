@@ -13,5 +13,33 @@ jobs:
     steps:
     - name: Checar código
       uses: actions/checkout@v2
+    - name: Instalando streamlink e selenium
+      run: |
+          pip install --user --upgrade streamlink
+          pip install --user --upgrade selenium
+          pip install yt-dlp
+          pip install pytube
+          pip install youtube-dl
+          pip install requests
+          pip install beautifulsoup4
+          pip install fastapi
+          pip install uvicorn
+          pip install schedule
+          
     - name: Executar script
       run: python amor.py
+      
+    - name: Fazer push do arquivo YAML
+      uses: actions/upload-artifact@v2
+      with:
+          name: agendador-de-amor.yml
+          path: agendador-de-amor.yml
+
+    - name: Commit e fazer push do arquivo YAML
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+          commit_message: "Atualizar agendador-de-amor.yml"
+          file_pattern: agendador-de-amor.yml
+          commit_options: '--author "GitHub Action <action@github.com>"'
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
