@@ -13,8 +13,7 @@ jobs:
     steps:
       - name: Checar código
         uses: actions/checkout@v2
-        with:
-          path: ./amor.py
+
       - name: Instalando streamlink e selenium
         run: |
           pip install --user --upgrade streamlink
