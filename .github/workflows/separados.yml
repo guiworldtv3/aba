@@ -10,51 +10,34 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout do repositório
-        uses: actions/checkout@v3
-
-      - name: Configure Git credentials
-        env:
-          USERNAME: ${{ secrets.USERNAME }}
-          EMAIL: ${{ secrets.EMAIL }}
-        run: |
-          git config --global user.name "$USERNAME"
-          git config --global user.email "$EMAIL"
-          echo "User name and email set successfully"
-
+        uses: actions/checkout@v2
+      
       - name: Configurar ambiente Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+          architecture: x64
+      
+      - name: Instalar dependências Python
         run: |
-          setx path "%path%;C:\Python39\Scripts;C:\Python39\"
           python -m pip install --upgrade pip
           pip install requests
-
-
-      - name: Instalando streamlink e selenium
-        run: |
-          pip install --user --upgrade streamlink
-          pip install --user --upgrade selenium
+          pip install streamlink
+          pip install selenium
           pip install yt-dlp
           pip install pytube
-          pip install bs4
-
-          
-          
-      - name: INSTALANDO SELENIUM
-        run: |
-         pip install selenium --upgrade
-        
-      - name: Instalando streamlink
-        run: |
-         pip install --user --upgrade streamlink
-        
+          pip install beautifulsoup4
+      
       - name: Executar script
         run: python amor.py
-
+      
       - name: Verificar credenciais do GitHub
         run: |
           git config user.name && git config user.email
-
       - name: Fazer commit e push
-        run: |
-          git add .
-          git commit -m "Atualizando informações de amor"
-          git push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Atualizando informações de amor
+          commit_options: '--no-verify'
+          commit_user_name: ${{ secrets.USERNAME }}
+          commit_user_email: ${{ secrets.EMAIL }}
