@@ -18,6 +18,20 @@ jobs:
           python-version: 3.9
           architecture: x64
       
+      - name: Instalar Git
+        run: |
+          choco install git
+
+
+      - name: Verificar PowerShell
+        run: |
+          powershell -command "Get-Host"
+
+
+      - name: Exibir caminho do Python
+        run: echo $env:pythonLocation
+
+
       - name: Instalar dependências Python
         run: |
           python -m pip install --upgrade pip
