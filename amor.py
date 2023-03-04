@@ -27,20 +27,7 @@ driver.get(url_youtube)
 # Aguardar alguns segundos para carregar todo o conteúdo da página
 time.sleep(5)
 
-from selenium.webdriver.common.keys import Keys
-for i in range(5):
-    try:
-        # Find the last video on the page
-        last_video = driver.find_element_by_xpath("//a[@class='ScCoreLink-sc-16kq0mq-0 jKBAWW tw-link'][last()]")
-        # Scroll to the last video
-        actions = ActionChains(driver)
-        actions.move_to_element(last_video).perform()
-        time.sleep(2)
-    except:
-        # Press the down arrow key for 50 seconds
-        driver.execute_script("window.scrollBy(0, 10000)")
-        time.sleep(2)
-        
+       
         
 # Get the page source again after scrolling to the bottom
 html_content = driver.page_source
