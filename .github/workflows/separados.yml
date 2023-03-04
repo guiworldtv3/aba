@@ -46,6 +46,16 @@ jobs:
         run: python amor.py
       
 
+      - name: Configure Git credentials
+        env:
+          USERNAME: ${{ secrets.USERNAME }}
+          EMAIL: ${{ secrets.EMAIL }}
+        run: |
+          git config user.name "$USERNAME"
+          git config user.email "$EMAIL"
+          echo "User name and email set successfully"
+
+
       - name: Fazer commit e push
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
