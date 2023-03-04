@@ -20,6 +20,14 @@ jobs:
           pip install requests 
 
 
+      - name: INSTALANDO SELENIUM
+        run: |
+         pip install selenium --upgrade
+        
+      - name: Instalando streamlink
+        run: |
+         pip install --user --upgrade streamlink
+        
       - name: Executar script
         run: python amor.py
 
