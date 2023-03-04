@@ -5,46 +5,29 @@ on:
       - cron: '0 */2 * * *'
 
   workflow_dispatch:
-  
-  
+
 jobs:
   executar-amor:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-    - name: Checar código
-      uses: actions/checkout@v2
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
 
-    - name: Instalando streamlink e selenium
-      run: |
-          pip install --user --upgrade streamlink
-          pip install --user --upgrade selenium
-          pip install yt-dlp
-          pip install pytube
-          pip install youtube-dl
-          pip install requests
-          pip install beautifulsoup4
-          pip install fastapi
-          pip install uvicorn
-          pip install schedule
-          
-      
-    - name: Executar script
-      run: python amor.py
-      
-    - name: Configurar Git
-      run: |
-        git config --global user.name "seu nome de usuário"
-        git config --global user.email "seu endereço de e-mail"
+      - name: Configurar ambiente Python
+        run: |
+          setx path "%path%;C:\Python39\Scripts;C:\Python39"
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Adicionar alterações ao Git
-      run: |
-        git add .
+      - name: Executar script
+        run: python amor.py
 
-    - name: Criar commit
-      run: |
-        git commit -m "mensagem do commit"
+      - name: Verificar credenciais do GitHub
+        run: |
+          git config user.name && git config user.email
 
-    - name: Fazer push no repositório
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Fazer commit e push
+        run: |
+          git add .
+          git commit -m "Atualizando informações de amor"
+          git push
