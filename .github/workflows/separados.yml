@@ -19,6 +19,7 @@ jobs:
         run: |
           git config --global user.name "$USERNAME"
           git config --global user.email "$EMAIL"
+          echo "User name and email set successfully"
 
       - name: Configurar ambiente Python
         run: |
